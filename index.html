@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Downloader</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Downloader</h1>
+
+        <!-- YouTube URL Input -->
+        <label for="url">Enter YouTube URL:</label>
+        <input type="text" id="url" placeholder="Enter YouTube URL" required>
+
+        <!-- Format Selection -->
+        <label for="format">Select Format:</label>
+        <select id="format" onchange="toggleResolutionInput()">
+            <option value="mp3">MP3 (Audio)</option>
+            <option value="mp4">MP4 (Video)</option>
+        </select>
+
+        <!-- Resolution Selection -->
+        <label for="resolution" id="resolutionLabel" style="display:none;">Select Resolution:</label>
+        <select id="resolution" style="display:none;">
+            <option value="720p">720p</option>
+            <option value="1080p">1080p</option>
+            <option value="360p">360p</option>
+            <option value="144p">144p</option>
+        </select>
+
+        <button id="downloadButton" onclick="downloadContent()">Download</button>
+
+        <div id="statusMessage"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
