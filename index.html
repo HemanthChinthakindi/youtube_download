@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HH.M4a YT Downloader</title>
+    <style>
+        /* Base Styling & Theme */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Prioritizes your background image, blurs/darkens it slightly via linear-gradient for text readability */
+            background: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.85)), url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-x: hidden;
+            padding: 2rem 1rem;
+        }
+
+        /* Subtle animated red glow over your background image */
+        .bg-glow {
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 0, 55, 0.2) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #ff0037; /* Vibrant Red accent */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px rgba(255, 0, 55, 0.6);
+        }
+
+        header p {
+            color: #bbb;
+            font-size: 1.1rem;
+        }
+
+        /* Platform Selection Section */
+        .selector-container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ccc;
+        }
+
+        .cards-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .platform-card {
+            background: rgba(20, 20, 20, 0.8); /* Semi-transparent black to let background peak through */
+            backdrop-filter: blur(5px); /* Modern glassmorphism look */
+            border: 2px solid #222;
+            border-radius: 12px;
+            width: 260px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Dynamic Motion Hover Effects */
+        .platform-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff0037;
+            box-shadow: 0 10px 25px rgba(255, 0, 55, 0.4);
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .platform-card img {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 1.5rem;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .platform-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .platform-card span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Live Download Status Message */
+        #status-message {
+            font-size: 1.2rem;
+            color: #00ff88;
+            font-weight: 600;
+            min-height: 30px;
+            text-align: center;
+            margin-top: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #status-message.show {
+            opacity: 1;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Info / How to use section */
+        .instructions-panel {
+            background: rgba(17, 17, 17, 0.85);
+            backdrop-filter: blur(5px);
+            border-left: 4px solid #ff0037;
+            border-radius: 4px 12px 12px 4px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 100%;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        .instructions-panel h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #ff0037;
+        }
+
+        .instructions-panel ol {
+            padding-left: 1.2rem;
+            color: #ddd;
+            line-height: 1.8;
+        }
+
+        .instructions-panel li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Support / Buy Me A Coffee */
+        .coffee-section {
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.9), rgba(13, 13, 13, 0.9));
+            backdrop-filter: blur(5px);
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeInUp 1.6s ease-out;
+        }
+
+        .coffee-section h4 {
+            font-size: 1.3rem;
+            color: #ffcb42; /* Coffee Gold */
+            margin-bottom: 0.5rem;
+        }
+
+        .coffee-section p {
+            color: #aaa;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .upi-badge {
+            background: #222;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: #fff;
+            display: inline-block;
+            border: 1px dashed #ff0037;
+            user-select: all;
+            cursor: pointer;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); opacity: 0.8; }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <header>
+        <h1>HH.M4a YT Downloader</h1>
+        <p>Fast, sleek, and cross-platform video & audio retriever.</p>
+    </header>
+
+    <main class="selector-container">
+        <h2 class="section-title">Choose your tool environment</h2>
+        
+        <div class="cards-wrapper">
+            <a href="HHm4a_YT_Downloader_setup.exe" class="platform-card" onclick="triggerDownload(event, 'Windows')">
+                <img src="windows_logo.png" alt="Windows Logo" id="win-logo">
+                <span>Windows</span>
+            </a>
+
+            <a href="HHM4a_YT_Downloader.apk" class="platform-card" onclick="triggerDownload(event, 'Android')">
+                <img src="android_logo.png" alt="Android Logo" id="android-logo">
+                <span>Android</span>
+            </a>
+        </div>
+
+        <div id="status-message"></div>
+    </main>
+
+    <section class="instructions-panel">
+        <h3>How to use the tool</h3>
+        <ol>
+            <li>Launch the application on your chosen platform.</li>
+            <li>Provide/Paste your desired YouTube URL into the input field.</li>
+            <li>Click on <strong>Fetch Info</strong> to load video data.</li>
+            <li>Once the info appears, select your preferred resolution for <strong>MP4</strong> to download video, or select <strong>MP3</strong> if you wish to download only the audio.</li>
+        </ol>
+    </section>
+
+    <footer class="coffee-section">
+        <h4>☕ Enjoying the tool?</h4>
+        <p>If you like using HHM4a YT Downloader, consider supporting the development!</p>
+        <div class="upi-badge" title="Click to select all">
+            chinthakindihemanth1@ybl
+        </div>
+        
+        <div class="support-mail">
+            <span>For support, reach out at:</span>
+            <a href="mailto:chinthakindihemanth@gmail.com">chinthakindihemanth@gmail.com</a>
+        </div>
+    </footer>
+
+    <script>
+        function triggerDownload(event, platform) {
+            const statusBox = document.getElementById('status-message');
+            statusBox.textContent = `The Tool started downloading for ${platform}...`;
+            statusBox.classList.add('show');
+
+            setTimeout(() => {
+                statusBox.classList.remove('show');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
